@@ -1,0 +1,1 @@
+TOTAL_BANDWIDTH = 100  # Total available bandwidth in Mbps

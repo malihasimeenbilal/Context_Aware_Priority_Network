@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bandwidth Request Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      margin: 20px;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #2c3e50;
+      color: white;
+    }
+    tr:hover {background-color: #f1f1f1;}
+    .chart-container {
+      width: 100%;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h2>📊 Bandwidth Request Dashboard</h2>
+  <p><strong>Current Bandwidth Usage:</strong> {{ current_bandwidth }} / 100 Mbps</p>
+  <div class="chart-container">
+    <canvas id="statusChart"></canvas>
+  </div>
+  <table>
+    <tr>
+      <th>Timestamp</th>
+      <th>Source</th>
+      <th>Type</th>
+      <th>Required Bandwidth</th>
+      <th>Duration</th>
+      <th>Status</th>
+    </tr>
+    {% for log in logs %}
+    <tr>
+      <td>{{ log.timestamp }}</td>
+      <td>{{ log.source }}</td>
+      <td>{{ log.request_type }}</td>
+      <td>{{ log.required_bandwidth }}</td>
+      <td>{{ log.duration }}</td>
+      <td>{{ log.status }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <script>
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    const chartData = {
+      labels: [
+        {% for log in logs|reverse %}'{{ log.source }}'{% if not loop.last %}, {% endif %}{% endfor %}
+      ],
+      datasets: [{
+        label: 'Granted Bandwidth (Mbps)',
+        data: [
+          {% for log in logs|reverse %}
+            {% if log.status == 'granted' %}{{ log.required_bandwidth }}{% else %}0{% endif %}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        ],
+        backgroundColor: '#3498db',
+      },
+      {
+        label: 'Delayed Requests (Mbps)',
+        data: [
+          {% for log in logs|reverse %}
+            {% if log.status == 'delayed' %}{{ log.required_bandwidth }}{% else %}0{% endif %}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        ],
+        backgroundColor: '#e74c3c',
+      }]
+    };
+
+    const statusChart = new Chart(ctx, {
+      type: 'bar',
+      data: chartData,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'top' },
+          title: { display: true, text: 'Bandwidth Allocation Status' }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Bandwidth (Mbps)' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
