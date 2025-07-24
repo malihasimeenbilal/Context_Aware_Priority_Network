@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Bandwidth Request Dashboard</title>
+  <title>Context-Aware Bandwidth Allocation</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -33,14 +33,26 @@
       width: 100%;
       margin-top: 30px;
     }
+    #summaryPie {
+      max-width: 750px;
+      max-height: 750px;
+      margin: auto;
+      display: block;
+    }
   </style>
 </head>
 <body>
-  <h2>📊 Bandwidth Request Dashboard</h2>
-  <p><strong>Current Bandwidth Usage:</strong> {{ current_bandwidth }} / 100 Mbps</p>
+  <h2>📊 Context-Aware Bandwidth Allocation</h2>
+  <p><strong>Current Bandwidth Usage:</strong> {{ current_usage }} / 300 Mbps</p>
+
   <div class="chart-container">
     <canvas id="statusChart"></canvas>
   </div>
+
+  <div class="chart-container">
+    <canvas id="summaryPie"></canvas>
+  </div>
+
   <table>
     <tr>
       <th>Timestamp</th>
@@ -51,7 +63,8 @@
       <th>Status</th>
     </tr>
     {% for log in logs %}
-    <tr>
+    <tr style="background-color: {% if log.status == 'granted' %}#d4edda{% else %}#f8d7da{% endif %};">
+
       <td>{{ log.timestamp }}</td>
       <td>{{ log.source }}</td>
       <td>{{ log.request_type }}</td>
@@ -68,24 +81,22 @@
       labels: [
         {% for log in logs|reverse %}'{{ log.source }}'{% if not loop.last %}, {% endif %}{% endfor %}
       ],
-      datasets: [{
-        label: 'Granted Bandwidth (Mbps)',
-        data: [
-          {% for log in logs|reverse %}
-            {% if log.status == 'granted' %}{{ log.required_bandwidth }}{% else %}0{% endif %}{% if not loop.last %}, {% endif %}
-          {% endfor %}
-        ],
-        backgroundColor: '#3498db',
-      },
-      {
-        label: 'Delayed Requests (Mbps)',
-        data: [
-          {% for log in logs|reverse %}
-            {% if log.status == 'delayed' %}{{ log.required_bandwidth }}{% else %}0{% endif %}{% if not loop.last %}, {% endif %}
-          {% endfor %}
-        ],
-        backgroundColor: '#e74c3c',
-      }]
+      datasets: [
+        {
+          label: 'Granted Bandwidth (Mbps)',
+          data: [
+            {% for log in logs|reverse %}{% if log.status == 'granted' %}{{ log.required_bandwidth }}{% else %}0{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}
+          ],
+          backgroundColor: '#2ecc71'
+        },
+        {
+          label: 'Delayed Requests (Mbps)',
+          data: [
+            {% for log in logs|reverse %}{% if log.status == 'delayed' %}{{ log.required_bandwidth }}{% else %}0{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}
+          ],
+          backgroundColor: '#e74c3c'
+        }
+      ]
     };
 
     const statusChart = new Chart(ctx, {
@@ -101,6 +112,33 @@
           y: {
             beginAtZero: true,
             title: { display: true, text: 'Bandwidth (Mbps)' }
+          }
+        }
+      }
+    });
+
+    const summaryPie = new Chart(document.getElementById('summaryPie'), {
+      type: 'pie',
+      data: {
+        labels: ['Granted Requests', 'Delayed Requests'],
+        datasets: [{
+          data: [
+            {% set granted_count = logs | selectattr('status', 'equalto', 'granted') | list | length %}
+            {% set delayed_count = logs | selectattr('status', 'equalto', 'delayed') | list | length %}
+            {{ granted_count }}, {{ delayed_count }}
+          ],
+          backgroundColor: ['#2ecc71', '#e74c3c']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Request Outcome Overview'
+          },
+          legend: {
+            position: 'bottom'
           }
         }
       }

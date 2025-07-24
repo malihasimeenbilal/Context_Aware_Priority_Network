@@ -1,1 +1,1 @@
-TOTAL_BANDWIDTH = 100  # Total available bandwidth in Mbps
+TOTAL_BANDWIDTH = 300  # Total available bandwidth in Mbps

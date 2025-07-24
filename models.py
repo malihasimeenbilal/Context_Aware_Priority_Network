@@ -11,4 +11,4 @@ class RequestLog(db.Model):
     required_bandwidth = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     duration = db.Column(db.Integer)
-    completion_time = db.Column(db.DateTime)
+    completion_time = db.Column(db.DateTime(timezone=True),nullable=True)
