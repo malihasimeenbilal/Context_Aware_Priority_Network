@@ -22,14 +22,14 @@ The system is designed to simulate and manage bandwidth allocation in a restrain
 **Implementation Stage 1:**
 - Setup Backend Structure powered by SQLite + SQLAlchemy for real-time, accurate performance in vscode and install all dependencies.
 - Design database architecture Model for real-time data logs.
-- Setup Github repo and github actions pipelines.
+- Setup Github repositories and authorization.
 - Create a System Block Diagram.
 - Create a Methodology (Flow Chart)
 - Build source for Webpage data design (Index.html)
 - Build source for Simulator (logic.py)
 
 **Implementation Stage 2:**
-- Design Dabase Structure and webpage design for Dashboard and Simulator
+- Design Database Structure and webpage design for Dashboard and Simulator
 - Design Backend side for Priority- based queue handling for scalability
 - Handle backend side for background Threads for system logs
 - Design Handlers for Removal of expired logs post duration to free space & ensure accuracy
