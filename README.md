@@ -1,3 +1,4 @@
+![Flowchart](https://github.com/user-attachments/assets/16e5d778-ebc2-45d1-8576-942eacabd491)
 # Group 7 : Priority-Aware Network Management System for Emergency Bandwidth Allocation
 This research project proposes a priority-aware network management system. 
 
@@ -16,7 +17,7 @@ The system is designed to simulate and manage bandwidth allocation in a restrain
 <img width="1536" height="1024" alt="System Block Diagram" src="https://github.com/user-attachments/assets/012386b2-6494-4f63-b2c8-ae0007aaa71f" />
 
 ## Methodology (Flow Chart)
-<img width="400" height="800" alt="Methadology_flowchart" src="https://drive.google.com/file/d/1p4QciNPJgJmA1uYyIuxlIE9NyKNXSst2/view?usp=sharing"/>
+<img width="400" height="800" alt="Methadology_flowchart" src="https://github.com/user-attachments/assets/16e5d778-ebc2-45d1-8576-942eacabd491"/>
 
 
 **Implementation Stage 1:**
