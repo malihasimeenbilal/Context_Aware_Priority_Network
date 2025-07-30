@@ -16,7 +16,7 @@ The system is designed to simulate and manage bandwidth allocation in a restrain
 <img width="1536" height="1024" alt="System Block Diagram" src="https://github.com/user-attachments/assets/012386b2-6494-4f63-b2c8-ae0007aaa71f" />
 
 ## Methodology (Flow Chart)
-<img width="400" height="800" alt="Methadology_flowchart" src="https://github.com/user-attachments/assets/b9269d0e-8b44-4b0c-98e0-3498dc4a5284" />
+<img width="400" height="800" alt="Methadology_flowchart" src="https://drive.google.com/file/d/1p4QciNPJgJmA1uYyIuxlIE9NyKNXSst2/view?usp=sharing"/>
 
 
 **Implementation Stage 1:**
